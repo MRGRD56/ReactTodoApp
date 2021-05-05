@@ -1,0 +1,39 @@
+li.new-item {
+    list-style: none;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: #546e7a 1px solid;
+    margin: 12px 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+li.new-item>label {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+li.new-item>button.add-button {
+    margin-left: 30px;
+    background-color: transparent;
+    border: none;
+    color: #4caf50;
+    font-size: 28px;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 200ms;
+}
+
+li.new-item>button.add-button:hover {
+    background-color: rgba(76, 175, 80, 0.25);
+}
+
+li.new-item>button.add-button:active {
+    background-color: rgba(76, 175, 80, 0.5);
+}
