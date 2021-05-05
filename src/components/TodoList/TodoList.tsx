@@ -1,15 +1,10 @@
 import React from "react";
 import TodoItem from "../TodoItem/TodoItem";
-// import Todo from "../models/Todo"
-// import "./TodoList.css"
 import "../TodoItem/TodoItem.css"
-import {
-    MDBInput,
-    MDBInputGroup,
-    MDBRipple
-} from "mdb-react-ui-kit";
 import ITodoListProps from "./ITodoListProps";
 import ITodoListState from "./ITodoListState";
+import AppContext from "../../context/AppContext/AppContext";
+import InputForm from "../InputComponent/InputForm";
 
 export default class TodoList extends React.Component<ITodoListProps, ITodoListState> {
     constructor(props: ITodoListProps) {
@@ -20,8 +15,13 @@ export default class TodoList extends React.Component<ITodoListProps, ITodoListS
         };
     }
 
-    private addNewTodo() {
-        this.props.onAdd(this.state.newTodoTask);
+    static contextType = AppContext;
+    
+    context!: React.ContextType<typeof AppContext>;
+
+    private addNewTodo(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        this.context?.addTodo(this.state.newTodoTask);
         this.setState({
             newTodoTask: ""
         });
@@ -36,28 +36,28 @@ export default class TodoList extends React.Component<ITodoListProps, ITodoListS
     render() {
         return (
             <ul style={{margin: "5", padding: "0"}} className="d-flex flex-column">
-                <div style={{margin: "10px 5px 0 5px"}}>
-                    <MDBInputGroup className="flex-nowrap">
-                        <MDBInput label="Новая задача"
-                                  type="text"
-                                  wrapperStyle={{width: "calc(100% - 112px)"}}
-                                  value={this.state.newTodoTask}
-                                  onChange={this.onNewTodoTaskChange.bind(this)}/>
-                        <MDBRipple rippleColor="light"
-                                   color="success"
-                                   onClick={this.addNewTodo.bind(this)}>
-                            Добавить
-                        </MDBRipple>
-                    </MDBInputGroup>
-                </div>
-                <div>
-                    {
-                        this.props.todos.map(todo => (
-                                <TodoItem key={todo.id} todo={todo} onToggle={this.props.onToggle} onDelete={this.props.onDelete}/>
-                            )
-                        )
-                    }
-                </div>
+                <InputForm inputLabel="Новая задача" buttonText="Добавить" onSubmit={(task: string) => this.context?.addTodo(task)}/>
+                {
+                    this.props.todos.length > 0
+                    ? (
+                        <div>
+                            {
+                                this.props.todos
+                                    .sort((a, b) => b.id - a.id)
+                                    .sort((a, b) => +a.isDone - +b.isDone)
+                                    .map(todo => (
+                                    <TodoItem key={todo.id} todo={todo}/>
+                                    )
+                                )
+                            }
+                        </div>
+                    )
+                    : (
+                        <div className="m-2 text-muted">
+                            Список дел пуст.
+                        </div>
+                    )
+                }
             </ul>
         );
     }

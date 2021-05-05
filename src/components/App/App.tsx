@@ -4,30 +4,37 @@ import Todo from "../../models/Todo";
 import * as React from "react";
 import IAppState from "./IAppState";
 import IAppProps from "./IAppProps";
+import AppContext from "../../context/AppContext/AppContext";
+import IAppContextValue from "../../context/AppContext/IAppContextValue";
 
 export default class App extends React.Component<IAppProps, IAppState> {
     constructor(props: IAppProps = {}) {
         super(props);
 
-        this.state = {
-            todos: [
-                new Todo("Купить хлеб"),
-                new Todo("Купить колбасу", true),
-                new Todo("Купить сыр"),
-            ]
-        };
+        const todos = [
+            new Todo("Купить хлеб"),
+            new Todo("Купить колбасу", true),
+            new Todo("Купить сыр"),
+        ];
+
+        this.state = { todos };
     }
 
     render() {
         return (
-            <div className="container">
-                <TodoList todos={this.state.todos}
-                          onToggle={this.toggleTodo.bind(this)}
-                          onDelete={this.deleteTodo.bind(this)}
-                          onAdd={this.addTodo.bind(this)}/>
-            </div>
+            <AppContext.Provider value={this._appContextValue}>
+                <div className="container">
+                    <TodoList todos={this.state.todos}/>
+                </div>
+            </AppContext.Provider>
         );
     }
+
+    private readonly _appContextValue: IAppContextValue = {
+        toggleTodo: this.toggleTodo.bind(this),
+        deleteTodo: this.deleteTodo.bind(this),
+        addTodo: this.addTodo.bind(this)
+    };
 
     private toggleTodo(todoId: number) {
         // const todo = state.todos.find(x => x.id === todoId);
@@ -63,6 +70,6 @@ export default class App extends React.Component<IAppProps, IAppState> {
         this.state.todos.push(new Todo(task));
         this.setState({
             todos: this.state.todos
-        })
+        });
     }
 }
