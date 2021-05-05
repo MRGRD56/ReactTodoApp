@@ -4,7 +4,7 @@ import "../TodoItem/TodoItem.css"
 import ITodoListProps from "./ITodoListProps";
 import ITodoListState from "./ITodoListState";
 import AppContext from "../../context/AppContext/AppContext";
-import InputForm from "../InputComponent/InputForm";
+import InputForm from "../InputForm/InputForm";
 
 export default class TodoList extends React.Component<ITodoListProps, ITodoListState> {
     constructor(props: ITodoListProps) {
