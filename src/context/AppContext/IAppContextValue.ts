@@ -1,5 +1,5 @@
 export default interface IAppContextValue {
-    toggleTodo: Function,
-    deleteTodo: Function,
-    addTodo: Function
+    toggleTodo: (todoId: number) => void,
+    deleteTodo: (todoId: number) => void,
+    addTodo: (task: string) => void
 }

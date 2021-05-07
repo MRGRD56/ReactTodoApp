@@ -1,8 +1,9 @@
 export default interface IInputFormProps {
     /**
-     * A function to be called when the form submitted. Takes a string as a parameter (input field value).
+     * A function to be called when the form submitted.
+     * @param text Input field value.
      */
-    onSubmit?: Function;
+    onSubmit?: (text: string) => void;
     /**
      * MDBRipple content ?? "submit".
      */
